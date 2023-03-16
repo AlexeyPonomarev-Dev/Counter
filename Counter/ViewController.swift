@@ -7,20 +7,19 @@
 
 import UIKit
 
-enum ChangeString: String {
+fileprivate enum ChangeString: String {
     case change = "Значение измененно на"
     case reset = "Значение сброшенно"
     case negativeDecrement = "попытка уменьшить значение счётчика ниже 0"
 }
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var historyTextView: UITextView!
-    @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet private weak var historyTextView: UITextView!
+    @IBOutlet private weak var counterLabel: UILabel!
     
-    @IBOutlet weak var resetCounterButton: UIButton!
-    @IBOutlet weak var decrementButton: UIButton!
-    @IBOutlet weak var incrementButton: UIButton!
+    @IBOutlet private weak var resetCounterButton: UIButton!
+    @IBOutlet private weak var decrementButton: UIButton!
+    @IBOutlet private weak var incrementButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,38 +28,7 @@ class ViewController: UIViewController {
         historyTextView.layer.cornerRadius = 12
         counterLabel.text = "0"
     }
-
-    @IBAction func decrement(_ sender: Any) {
-        if (counterLabel.text == "0") {
-            setHistory(with: .negativeDecrement)
-
-            return;
-        }
-        
-        guard let text = counterLabel.text, let count = Int(text)  else { return }
-        
-        counterLabel.text = String(count - 1)
-        setHistory(with: .change, and: "-1")
-
-    }
     
-    @IBAction func increment(_ sender: Any) {
-        guard let text = counterLabel.text, let count = Int(text)  else { return }
-        
-        counterLabel.text = String(count + 1)
-        
-        setHistory(with: .change, and: "+1")
-    }
-    
-    @IBAction func resetCount(_ sender: Any) {
-        counterLabel.text = "0"
-        
-        setHistory(with: .reset)
-    }
-}
-
-// MARK: private methods
-extension ViewController {
     private func getCurrentDateString() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()
@@ -74,5 +42,29 @@ extension ViewController {
         let date = getCurrentDateString()
     
         historyTextView.text = "\(historyText) \n [\(date)]: \(string.rawValue) \(value ?? "")"
+    }
+
+    @IBAction private func decrement(_ sender: Any) {
+        if (counterLabel.text == "0") {
+            setHistory(with: .negativeDecrement)
+            return
+        }
+        
+        guard let text = counterLabel.text, let count = Int(text)  else { return }
+
+        counterLabel.text = String(count - 1)
+        setHistory(with: .change, and: "-1")
+    }
+    
+    @IBAction private func increment(_ sender: Any) {
+        guard let text = counterLabel.text, let count = Int(text)  else { return }
+
+        counterLabel.text = String(count + 1)
+        setHistory(with: .change, and: "+1")
+    }
+    
+    @IBAction private func resetCount(_ sender: Any) {
+        counterLabel.text = "0"
+        setHistory(with: .reset)
     }
 }
