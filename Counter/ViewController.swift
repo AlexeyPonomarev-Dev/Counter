@@ -61,7 +61,7 @@ class ViewController: UIViewController {
 
 // MARK: private methods
 extension ViewController {
-    private func getCurrentTimeString() -> String {
+    private func getCurrentDateString() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
@@ -71,9 +71,8 @@ extension ViewController {
     
     private func setHistory(with string: ChangeString, and value: String? = nil)  {
         guard let historyText = historyTextView.text else { return }
-        let time = getCurrentTimeString()
+        let date = getCurrentDateString()
     
-        
-        historyTextView.text = "\(historyText) \n [\(time)]: \(string.rawValue) \(value ?? "")"
+        historyTextView.text = "\(historyText) \n [\(date)]: \(string.rawValue) \(value ?? "")"
     }
 }
